@@ -14,7 +14,7 @@ app.use(bodyParser.json());
    // Static FOlder
    app.use(express.static(__dirname + '/public/'));
 
-   app.get(/.*/);
+   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html  '));
  }
 
 MongoClient.connect('mongodb://localhost:27017')
