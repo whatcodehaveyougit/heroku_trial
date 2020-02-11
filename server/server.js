@@ -10,22 +10,23 @@ const createRouter = require('./helpers/create_router.js');
 
 app.use(bodyParser.json());
 
- if (process.env.NODE_env === 'production') {
-   // Static FOlder
-   app.use(express.static(__dirname + '/public/'));
+ // if (process.env.NODE_env === 'production') {
+ //   // Static FOlder
+ //   app.use(express.static(__dirname + '/public/'));
+ //
+ //   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html  '));
+ // }
 
-   app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html  '));
- }
-
-MongoClient.connect('mongodb://localhost:27017')
+MongoClient.connect('mongodb://sigurd:password1@ds259518.mlab.com:59518/heroku_7ftsxjvl')
 .then((client) =>{
-  const db = client.db('hotel');
+  const db = client.db('heroku_7ftsxjvl');
   const bookingsCollection = db.collection('bookings');
   const bookingsRouter = createRouter(bookingsCollection);
   app.use('/api/bookings', bookingsRouter);
+  app.use('/', express.static(path.join(__dirname + '/public/')));
 })
 .catch(console.err);
 
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log(`Listening on port ${this.address().port }`)
 })
